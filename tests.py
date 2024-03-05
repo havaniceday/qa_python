@@ -38,8 +38,9 @@ class TestBooksCollector:
 
     # test 2 check that it is impossible to add a book with the same title twice
     def test_add_new_book_already_existing_is_impossible(self, test_book_collector):
-        test_book_collector.add_new_book('Дюна')
-        assert list(test_book_collector.get_books_genre().keys()).count('Дюна') == 1
+        book_name = list(test_book_collector.get_books_genre().keys())[0]
+        test_book_collector.add_new_book(book_name)
+        assert list(test_book_collector.get_books_genre().keys()).count(book_name) == 1
 
     # test 3 check setting a valid book genre for existing book
     def test_set_book_genre_valid_input_genre_is_set(self, test_book_collector):
@@ -67,11 +68,18 @@ class TestBooksCollector:
         assert result == test_book_collector.books_genre
 
     # test 7 check that there are no adult books in list for children
-    def test_get_books_for_children_adult_books_are_filtered(self, test_book_collector):
-        result = test_book_collector.get_books_for_children()
-        assert len(result) == 5
-        assert test_book_collector.get_books_with_specific_genre(
-            "Ужасы") not in result and test_book_collector.get_books_with_specific_genre("Детектив") not in result
+    def test_get_books_for_children_adult_books_are_filtered(self):
+        collector = BooksCollector()
+        collector.add_new_book("Ужастик")
+        collector.set_book_genre("Ужастик","Ужасы")
+        collector.add_new_book("Всех убили")
+        collector.set_book_genre("Всех убили","Детектив")
+        collector.add_new_book("Три хаха")
+        collector.set_book_genre("Три хаха","Комедии")
+        result = collector.get_books_for_children()
+        assert len(result) == 1
+        assert collector.get_books_with_specific_genre(
+            "Ужасы") not in result and collector.get_books_with_specific_genre("Детектив") not in result
 
     # test 8 check adding not existing book to favourites is impossible
     @pytest.mark.parametrize("book", ['Война и мир', 'Гордость и Предубеждение', 'Красавица и Чудовище'])

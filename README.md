@@ -1,3 +1,7 @@
+File tests.py tests methods of main.py with pytest. To run tests, use python -m pytest tests.py
+
+Tests implemented cover positive testing of each method as well as snegative testing for add_new_book() and add_book_in_favourites() methods 
+
 List of implemented tests:
 test 1 check that it is impossible to add a book with empty title or the book with a title longer than expected
 test 2 check that it is impossible to add a book with the same title twice
